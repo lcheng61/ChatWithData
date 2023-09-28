@@ -7,11 +7,15 @@ from langchain.chat_models import ChatOpenAI
 from langchain.document_loaders import UnstructuredFileLoader
 from langchain.document_loaders.image import UnstructuredImageLoader
 from langchain.document_loaders import ImageCaptionLoader
+from langchain.document_loaders import WebBaseLoader
 from langchain.docstore.document import Document
+
 import os
 import pytube
 import openai
+import requests
 
+from bs4 import BeautifulSoup
 # Chat UI title
 st.header("Upload your own truth/fact sources and ask questions like ChatGPT")
 st.subheader('File types supported: PDF/DOCX/TXT/JPG/PNG/YouTube :city_sunrise:')
@@ -40,8 +44,8 @@ def load_version_history():
 # Sidebar section for uploading files and providing a YouTube URL
 with st.sidebar:
     uploaded_files = st.file_uploader("Please upload your true/fact files", accept_multiple_files=True, type=None)
-    youtube_url = st.text_input("YouTube URL")
-
+    youtube_url = st.text_input("YouTube URL", max_chars=200)
+    web_url = st.text_input("Webpage URL", max_chars=200)
     # Create an expander for the version history in the sidebar
     # with st.sidebar.expander("**Version History**", expanded=False):
     #    st.write(load_version_history())
@@ -51,7 +55,7 @@ with st.sidebar:
     st.info("Please refresh the browser if you decide to upload more files to reset the session", icon="🚨")
 
 # Check if files are uploaded or YouTube URL is provided
-if uploaded_files or youtube_url:
+if uploaded_files or youtube_url or web_url:
     # Print the number of files uploaded or YouTube URL provided to the console
     st.write(f"Number of files uploaded: {len(uploaded_files)}")
 
@@ -90,6 +94,7 @@ if uploaded_files or youtube_url:
 
         # Load the YouTube audio stream if URL is provided
         if youtube_url:
+            st.write("Youtube URL: " + youtube_url)
             youtube_video = pytube.YouTube(youtube_url)
             streams = youtube_video.streams.filter(only_audio=True)
             stream = streams.first()
@@ -104,6 +109,15 @@ if uploaded_files or youtube_url:
             youtube_document = Document(page_content=youtube_text, metadata={})
             documents.append(youtube_document)
 
+        if web_url:
+            st.write("Webpage URL: " + web_url)
+            loader = WebBaseLoader([web_url])
+            loader.default_parser = "html.parser"
+            loaded_documents = loader.load()
+
+            # Create a Langchain document instance for the scraped web content
+            web_document = Document(page_content=loaded_documents[0].page_content, metadata={})   
+            documents.append(web_document)
         # Chunk the data, create embeddings, and save in vectorstore
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=150)
         document_chunks = text_splitter.split_documents(documents)
@@ -154,4 +168,4 @@ if uploaded_files or youtube_url:
         st.session_state.messages.append({"role": "assistant", "content": full_response})
 
 else:
-    st.write("Please upload your files and provide a YouTube URL for transcription.")
+    st.write("Please upload your files, provide a web link, or provide a YouTube URL for transcription as the source of trust.")
