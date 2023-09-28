@@ -13,7 +13,7 @@ import pytube
 import openai
 
 # Chat UI title
-st.header("Upload your own files and ask questions like ChatGPT")
+st.header("Upload your own truth/fact sources and ask questions like ChatGPT")
 st.subheader('File types supported: PDF/DOCX/TXT/JPG/PNG/YouTube :city_sunrise:')
 
 # File uploader in the sidebar on the left
@@ -39,12 +39,12 @@ def load_version_history():
 
 # Sidebar section for uploading files and providing a YouTube URL
 with st.sidebar:
-    uploaded_files = st.file_uploader("Please upload your files", accept_multiple_files=True, type=None)
+    uploaded_files = st.file_uploader("Please upload your true/fact files", accept_multiple_files=True, type=None)
     youtube_url = st.text_input("YouTube URL")
 
     # Create an expander for the version history in the sidebar
-    with st.sidebar.expander("**Version History**", expanded=False):
-        st.write(load_version_history())
+    # with st.sidebar.expander("**Version History**", expanded=False):
+    #    st.write(load_version_history())
 
     st.info("Please refresh the browser if you decide to upload more files to reset the session", icon="🚨")
 
