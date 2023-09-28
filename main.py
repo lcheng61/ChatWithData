@@ -46,6 +46,9 @@ with st.sidebar:
     # with st.sidebar.expander("**Version History**", expanded=False):
     #    st.write(load_version_history())
 
+    with col2:
+    st.image(image='fact_truth.jpeg', caption='Check the fact.')
+    
     st.info("Please refresh the browser if you decide to upload more files to reset the session", icon="🚨")
 
 # Check if files are uploaded or YouTube URL is provided
