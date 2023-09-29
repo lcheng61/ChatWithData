@@ -15,15 +15,15 @@ import pytube
 import openai
 import requests
 
-from bs4 import BeautifulSoup
 # Chat UI title
-st.header("Upload your own truth/fact sources and ask questions like ChatGPT")
-st.subheader('File types supported: PDF/DOCX/TXT/JPG/PNG/YouTube :city_sunrise:')
+st.header("The responsible use of AI can stop mis-info")
+st.info("Provide the truth sources and ask questions like ChatGPT")
+#st.info('File types supported: PDF/DOCX/TXT/JPG/PNG/YouTube/URL :city_sunrise:')
 
 # File uploader in the sidebar on the left
 with st.sidebar:
     # Input for OpenAI API Key
-    openai_api_key = st.text_input("OpenAI API Key", type="password")
+    openai_api_key = st.text_input("OpenAI API Key", "xxx", type="password")
 
     # Check if OpenAI API Key is provided
     if not openai_api_key:
@@ -31,6 +31,7 @@ with st.sidebar:
         st.stop()
 
     # Set OPENAI_API_KEY as an environment variable
+
     os.environ["OPENAI_API_KEY"] = openai_api_key
 
 # Initialize ChatOpenAI model
@@ -43,16 +44,25 @@ def load_version_history():
 
 # Sidebar section for uploading files and providing a YouTube URL
 with st.sidebar:
-    uploaded_files = st.file_uploader("Please upload your true/fact files", accept_multiple_files=True, type=None)
-    youtube_url = st.text_input("YouTube URL", max_chars=200)
-    web_url = st.text_input("Webpage URL", max_chars=200)
+    st.image(image='fact_truth.jpeg')
+    uploaded_files = st.file_uploader("Please upload your truth source files", accept_multiple_files=True, type=None)
+    youtube_url = st.text_input("Truth source in YouTube URL", max_chars=200)
+    web_url = st.text_input("Truth source in Webpage URL", max_chars=200)
     # Create an expander for the version history in the sidebar
     # with st.sidebar.expander("**Version History**", expanded=False):
     #    st.write(load_version_history())
 
-    st.image(image='fact_truth.jpeg', caption='Check the fact.')
-    
     st.info("Please refresh the browser if you decide to upload more files to reset the session", icon="🚨")
+
+# First check if OpenAI API Key is provided
+if not openai_api_key:
+    st.info("Please add your OpenAI API key to continue.")
+    st.stop()
+
+# Set OPENAI_API_KEY as an environment variable
+os.environ["OPENAI_API_KEY"] = openai_api_key
+
+
 
 # Check if files are uploaded or YouTube URL is provided
 if uploaded_files or youtube_url or web_url:
