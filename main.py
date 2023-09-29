@@ -16,9 +16,8 @@ import openai
 import requests
 
 # Chat UI title
-st.header("The responsible use of AI can stop mis-info")
+st.header("Responsible use of AI can stop mis-info")
 st.info("Provide the truth sources and ask questions like ChatGPT")
-#st.info('File types supported: PDF/DOCX/TXT/JPG/PNG/YouTube/URL :city_sunrise:')
 
 # File uploader in the sidebar on the left
 with st.sidebar:
@@ -45,7 +44,7 @@ def load_version_history():
 # Sidebar section for uploading files and providing a YouTube URL
 with st.sidebar:
     st.image(image='fact_truth.jpeg')
-    uploaded_files = st.file_uploader("Please upload your truth source files", accept_multiple_files=True, type=None)
+    uploaded_files = st.file_uploader("Please upload your truth source files (pdf/docs/txt/jpg/png/YouTube)", accept_multiple_files=True, type=None)
     youtube_url = st.text_input("Truth source in YouTube URL", max_chars=200)
     web_url = st.text_input("Truth source in Webpage URL", max_chars=200)
     # Create an expander for the version history in the sidebar
