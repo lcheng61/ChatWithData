@@ -30,8 +30,8 @@ with st.sidebar:
         st.stop()
 
     # Set OPENAI_API_KEY as an environment variable
-
-    os.environ["OPENAI_API_KEY"] = openai_api_key
+    if not os.environ["OPENAI_API_KEY"]:
+        os.environ["OPENAI_API_KEY"] = openai_api_key
 
 # Initialize ChatOpenAI model
 llm = ChatOpenAI(temperature=0, max_tokens=1000, model_name="gpt-3.5-turbo", streaming=True)
