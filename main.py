@@ -22,8 +22,9 @@ st.info("Provide the truth sources and ask questions like ChatGPT")
 # File uploader in the sidebar on the left
 with st.sidebar:
     # Input for OpenAI API Key
-    openai_api_key = st.text_input("OpenAI API Key", "xxx", type="password")
-
+    open_api_key = "xxx"
+    # uncomment the following line to enable api key input.
+#    openai_api_key = st.text_input("OpenAI API Key", "xxx", type="password")
     # Check if OpenAI API Key is provided
     if not openai_api_key:
         st.info("Please add your OpenAI API key to continue.")
