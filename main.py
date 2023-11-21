@@ -23,8 +23,7 @@ st.info("Provide the truth sources and ask questions like ChatGPT")
 with st.sidebar:
     # Input for OpenAI API Key
     open_api_key = "xxx"
-    # uncomment the following line to enable api key input.
-#    openai_api_key = st.text_input("OpenAI API Key", "xxx", type="password")
+    openai_api_key = st.text_input("OpenAI API Key", "xxx", type="password")
     # Check if OpenAI API Key is provided
     if not openai_api_key:
         st.info("Please add your OpenAI API key to continue.")
@@ -55,9 +54,9 @@ with st.sidebar:
     st.info("Please refresh the browser if you decide to upload more files to reset the session", icon="🚨")
 
 # First check if OpenAI API Key is provided
-if not openai_api_key:
-    st.info("Please add your OpenAI API key to continue.")
-    st.stop()
+#if not openai_api_key:
+#    st.info("Please add your OpenAI API key to continue.")
+#    st.stop()
 
 # set secret for streamlit
 if st.secrets["OPENAI_API_KEY"]:
