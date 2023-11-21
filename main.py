@@ -22,16 +22,18 @@ st.info("Provide the truth sources and ask questions like ChatGPT")
 # File uploader in the sidebar on the left
 with st.sidebar:
     # Input for OpenAI API Key
-    open_api_key = "xxx"
-    openai_api_key = st.text_input("OpenAI API Key", "xxx", type="password")
+    openai_api_key = st.text_input("OpenAI API Key", "", type="password")
     # Check if OpenAI API Key is provided
     if not openai_api_key:
-        st.info("Please add your OpenAI API key to continue.")
+        st.info("Please add your OpenAI API key to continue. If you don't have a key, just click ENTER.")
         st.stop()
-
+    # set secret for streamlit
+    if st.secrets["OPENAI_API_KEY"]:
+        st.info("No worries, my API key is being used.")
+        os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+    else:
     # Set OPENAI_API_KEY as an environment variable
-#    if not os.environ["OPENAI_API_KEY"]:
-#        os.environ["OPENAI_API_KEY"] = openai_api_key
+        os.environ["OPENAI_API_KEY"] = openai_api_key
 
 # Initialize ChatOpenAI model
 llm = ChatOpenAI(temperature=0, max_tokens=1000, model_name="gpt-3.5-turbo", streaming=True)
@@ -54,16 +56,11 @@ with st.sidebar:
     st.info("Please refresh the browser if you decide to upload more files to reset the session", icon="🚨")
 
 # First check if OpenAI API Key is provided
+# Uncheck the following 3 lines if you want to use user's api key.
 #if not openai_api_key:
 #    st.info("Please add your OpenAI API key to continue.")
 #    st.stop()
 
-# set secret for streamlit
-if st.secrets["OPENAI_API_KEY"]:
-    os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
-else:
-    # Set OPENAI_API_KEY as an environment variable
-    os.environ["OPENAI_API_KEY"] = openai_api_key
 
 # Check if files are uploaded or YouTube URL is provided
 if uploaded_files or youtube_url or web_url:
