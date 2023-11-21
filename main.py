@@ -33,6 +33,10 @@ with st.sidebar:
     if not os.environ["OPENAI_API_KEY"]:
         os.environ["OPENAI_API_KEY"] = openai_api_key
 
+    # set secret for streamlit
+    if not st.secrets["OPENAI_API_KEY"]:
+        os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+
 # Initialize ChatOpenAI model
 llm = ChatOpenAI(temperature=0, max_tokens=1000, model_name="gpt-3.5-turbo", streaming=True)
 
