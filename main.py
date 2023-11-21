@@ -30,12 +30,8 @@ with st.sidebar:
         st.stop()
 
     # Set OPENAI_API_KEY as an environment variable
-    if not os.environ["OPENAI_API_KEY"]:
-        os.environ["OPENAI_API_KEY"] = openai_api_key
-
-    # set secret for streamlit
-    if not st.secrets["OPENAI_API_KEY"]:
-        os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+#    if not os.environ["OPENAI_API_KEY"]:
+#        os.environ["OPENAI_API_KEY"] = openai_api_key
 
 # Initialize ChatOpenAI model
 llm = ChatOpenAI(temperature=0, max_tokens=1000, model_name="gpt-3.5-turbo", streaming=True)
@@ -62,10 +58,12 @@ if not openai_api_key:
     st.info("Please add your OpenAI API key to continue.")
     st.stop()
 
-# Set OPENAI_API_KEY as an environment variable
-os.environ["OPENAI_API_KEY"] = openai_api_key
-
-
+# set secret for streamlit
+if st.secrets["OPENAI_API_KEY"]:
+    os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+else:
+    # Set OPENAI_API_KEY as an environment variable
+    os.environ["OPENAI_API_KEY"] = openai_api_key
 
 # Check if files are uploaded or YouTube URL is provided
 if uploaded_files or youtube_url or web_url:
